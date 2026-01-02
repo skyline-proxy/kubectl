@@ -36,7 +36,13 @@ jobs:
         id: kubectl-tag
         run: |
           set -euo pipefail
-          tags="$(curl -fsSL https://mcr.microsoft.com/v2/oss/kubernetes/kubectl/tags/list | jq -r '.tags[]' | grep -E '^v[0-9]+\\.[0-9]+\\.[0-9]+$' | sort -V)"
+          tags="$(
+            curl -fsSL https://mcr.microsoft.com/v2/oss/kubernetes/kubectl/tags/list \
+              | jq -r '.tags[]' \
+              | grep -E '^v[0-9]+\\.[0-9]+\\.[0-9]+$' \
+              || true
+          )"
+          tags="$(printf '%s\n' "$tags" | sort -V)"
           latest="$(printf '%s\n' "$tags" | tail -n 1)"
           if [ -z "$latest" ]; then
             echo "no kubectl tags found on MCR" >&2
