@@ -39,7 +39,7 @@ jobs:
           tags="$(
             curl -fsSL https://mcr.microsoft.com/v2/oss/kubernetes/kubectl/tags/list \
               | jq -r '.tags[]' \
-              | grep -E '^v[0-9]+\\.[0-9]+\\.[0-9]+$' \
+              | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' \
               || true
           )"
           tags="$(printf '%s\n' "$tags" | sort -V)"
